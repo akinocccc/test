@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/akinocccc/test/compare/v1.2.0...v1.3.0) (2023-05-05)
+
+
+### Features
+
+* aaaaaaaaaaaavvvv ([e08e034](https://github.com/akinocccc/test/commit/e08e0348d4587343e050807fb3eac07967a2b47f))
+
 # [1.2.0](https://github.com/akinocccc/test/compare/v1.1.0...v1.2.0) (2023-05-05)
 
 

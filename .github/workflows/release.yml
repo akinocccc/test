@@ -1,14 +1,13 @@
-name: CI
+name: Release
 on: 
   push: 
     branches:
       - master
 
-permissions:
-  contents: write
-
 jobs:
-  test:
+  release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -18,8 +17,8 @@ jobs:
         with:
           node-version: '18'
       - name: Install
-        run: yarn
-      - name: Release
+        run: yarn && npm audit fix
+      - name: Pubilsh
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -13,14 +13,14 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-        with:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      - uses: actions/setup-node@v1
+      - name: Using Node.js
+        uses: actions/setup-node@v1
         with:
           node-version: '18'
-      - run: yarn
-      - run: yarn test
+      - name: Install
+        run: yarn
       - name: Release
         env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release

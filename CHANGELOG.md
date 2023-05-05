@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/akinocccc/test/compare/v1.9.0...v1.10.0) (2023-05-05)
+
+
+### Features
+
+* add readme ([66d670d](https://github.com/akinocccc/test/commit/66d670d696b79573dba3fd670ea3adcf71e9352c))
+
 # [1.9.0](https://github.com/akinocccc/test/compare/v1.8.0...v1.9.0) (2023-05-05)
 
 

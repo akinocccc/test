@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/akinocccc/test/compare/v1.1.0...v1.2.0) (2023-05-05)
+
+
+### Features
+
+* add changelog3333 ([7a82ba4](https://github.com/akinocccc/test/commit/7a82ba4cb0a41f1d8aa3372ec0ae5c980c669b2f))
+
 # [1.1.0](https://github.com/akinocccc/test/compare/v1.0.0...v1.1.0) (2023-05-05)
 
 

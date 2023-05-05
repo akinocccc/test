@@ -9,7 +9,7 @@
   },
   "author": "akinocccc",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",

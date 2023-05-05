@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/akinocccc/test/compare/v1.3.0...v1.3.1) (2023-05-05)
+
+
+### Bug Fixes
+
+* npm publish ([142568d](https://github.com/akinocccc/test/commit/142568d9d1f0c05abe8cd1628f40336764f16ba4))
+
 # [1.3.0](https://github.com/akinocccc/test/compare/v1.2.0...v1.3.0) (2023-05-05)
 
 

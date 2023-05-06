@@ -34,5 +34,7 @@ jobs:
       - name: Pubilsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_COMMITTER_EMAIL: actions@github.com
+          GIT_COMMITTER_NAME: github-actions
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release

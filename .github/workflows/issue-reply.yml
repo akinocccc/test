@@ -1,0 +1,25 @@
+name: Auto-Reply to New Issue
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  auto-reply:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Auto-reply
+      uses: peter-evans/create-or-update-comment@v3
+      id: couc
+      with:
+        token: ${{ secrets.GH_TOKEN }}
+        issue-number: 1
+        body: |
+          👋 @{{ author }}, Thanks for submitting your issue. We'll look into it and keep you updated on our progress. Let us know if you have any questions.
+
+    - name: Check outputs
+      run: |
+        echo "Comment ID - ${{ steps.couc.outputs.comment-id }}"

@@ -14,12 +14,23 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+        
+      - name: Set env variables
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: github-actions
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          curl -sSL -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runners | jq -r '.runners[] | select(.name=="default") | .id' | xargs -I {} curl -sSL -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.machine-man-preview+json" -X PATCH https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runners/{} -d '{"metadata":{"user":"github-actions","email":"actions@github.com"}}'
+
       - name: Using Node.js
         uses: actions/setup-node@v1
         with:
           node-version: '18'
+
       - name: Install
         run: yarn && npm audit fix
+
       - name: Pubilsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

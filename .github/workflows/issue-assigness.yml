@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Get Collaborators
         id: collaborators
-        uses: actions/http-client@v2.x
+        uses: actions/http-client@v2
         with:
           url: https://api.github.com/repos/${{ github.repository }}/collaborators
           method: GET

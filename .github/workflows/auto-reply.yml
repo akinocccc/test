@@ -1,11 +1,14 @@
 name: Auto-Reply
 
-on: [issues, pull_request]
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened, closed]
 
 jobs:
   auto-reply:
     runs-on: ubuntu-latest
-    
     steps:
     - name: Checkout
       uses: actions/checkout@v2

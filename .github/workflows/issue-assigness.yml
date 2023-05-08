@@ -14,9 +14,7 @@ jobs:
         with:
           script: |
             const { data: repoData } = await github.repos.get({ owner: context.repo.owner, repo: context.repo.repo });
-            const { data: teamData } = await github.teams.list({ org: context.repo.owner });
-            const collaborators = teamData.filter(team => team.permissions.admin).flatMap(team => team.members.map(member => member.login));
-            core.info(`Collaborators: ${collaborators.join(', ')}`);
+            core.info(`Collaborators: ${repoData}`);
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         

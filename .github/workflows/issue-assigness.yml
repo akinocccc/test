@@ -34,7 +34,7 @@ jobs:
           collaborators=${{ steps.assignees.outputs.collaborators }}
           collaboratorstring=${collaborators//,/ @}
           echo "::set-output name=string::@$collaboratorstring"
-        id: collaborators
+        id: template
 
       - name: Notification
         if: steps.assignees.outputs.collaborators != ''
@@ -42,7 +42,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            ♥️ Please ${{ steps.collaborators.outputs.string }} to confirm the issue as soon as possible. After confirmation, please reply to @${{ github.event.issue.user.login }} with the next step plan and the estimated time needed.
+            ♥️ Please ${{ steps.template.outputs.string }} to confirm the issue as soon as possible. After confirmation, please reply to @${{ github.event.issue.user.login }} with the next step plan and the estimated time needed.
             <!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->
           number: ${{ github.event.issue.number }}
           body-include: "<!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->"

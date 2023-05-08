@@ -6,5 +6,5 @@ aadd
 ss
 sss
 aaa
-bbbww
+bbb
 aaa

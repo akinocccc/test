@@ -14,7 +14,7 @@ jobs:
         with:
           script: |
             const { data: repoData } = await github.repos.get({ owner: context.repo.owner, repo: context.repo.repo });
-            core.info(`Collaborators: ${repoData}`);
+            core.info(`Collaborators: ${JSON.stringify(repoData)}`);
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         

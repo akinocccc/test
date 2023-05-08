@@ -66,6 +66,6 @@ body:
     id: remarks
     attributes:
       label: Additional context
-      description: Add any other context about the problem here, like screenshot or video record
+      description: Add any other context about the problem here, like screenshot or video record.
       placeholder: Please input
   

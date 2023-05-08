@@ -10,35 +10,39 @@ jobs:
     steps:
       - name: Get Collaborators
         id: collaborators
-        uses: actions/http-client@v2
+        uses: actions/github-script@v4
         with:
-          url: https://api.github.com/repos/${{ github.repository }}/collaborators
-          method: GET
-          headers: '{"Authorization": "Bearer ${{ secrets.GITHUB_TOKEN }}"}'
+          script: |
+            const { data: repoData } = await github.repos.get({ owner: context.repo.owner, repo: context.repo.repo });
+            const { data: teamData } = await github.teams.list({ org: context.repo.owner });
+            const collaborators = teamData.filter(team => team.permissions.admin).flatMap(team => team.members.map(member => member.login));
+            core.info(`Collaborators: ${collaborators.join(', ')}`);
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        
 
-      - run: echo ${{ steps.collaborators.outputs.data }}
       - name: Add assigness
-        if: steps.collaborators.outputs.data.contributors != ''
+        if: steps.collaborators.outputs.data.collaborators != ''
         uses: actions-cool/issues-helper@v3
         with:
           actions: 'add-assignees'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
-          assignees: ${{ steps.assignees.outputs.contributors }}
+          assignees: ${{ steps.assignees.outputs.collaborators }}
 
       - run: |
-          contributors=${{ steps.assignees.outputs.contributors }}
-          contributorstring=${contributors//,/ @}
-          echo "::set-output name=string::@$contributorstring"
-        id: contributors
+          collaborators=${{ steps.assignees.outputs.collaborators }}
+          collaboratorstring=${collaborators//,/ @}
+          echo "::set-output name=string::@$collaboratorstring"
+        id: collaborators
 
       - name: Notification
-        if: steps.assignees.outputs.contributors != ''
+        if: steps.assignees.outputs.collaborators != ''
         uses: actions-cool/maintain-one-comment@v2.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            ♥️ Please ${{ steps.contributors.outputs.string }} to confirm the issue as soon as possible. After confirmation, please reply to @${{ github.event.issue.user.login }} with the next step plan and the estimated time needed.
+            ♥️ Please ${{ steps.collaborators.outputs.string }} to confirm the issue as soon as possible. After confirmation, please reply to @${{ github.event.issue.user.login }} with the next step plan and the estimated time needed.
             <!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->
           number: ${{ github.event.issue.number }}
           body-include: "<!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->"

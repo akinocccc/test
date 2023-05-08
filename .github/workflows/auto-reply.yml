@@ -19,4 +19,4 @@ jobs:
         pullRequestOpened: |
           👋 @{{ author }}, Thanks for opening the PR. We'll review your PR as soon as possible.
         pullRequestMerged: |
-          🎉 @{{ author }}, The PR is Merged. Thank for your contribution.
+          🎉 @{{ author }}, The PR is merged. Thank for your contribution.

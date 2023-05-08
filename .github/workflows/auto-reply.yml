@@ -1,10 +1,6 @@
 name: Auto-Reply
 
-on:
-  issues:
-    types: [opened]
-  pull_request:
-    types: [opened]
+on: [issues, pull_request]
 
 jobs:
   auto-reply:

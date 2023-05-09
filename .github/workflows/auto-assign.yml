@@ -10,42 +10,36 @@ jobs:
   add-assigness:
     runs-on: ubuntu-latest
     steps:
-      - uses: wow-actions/auto-assign@v3
+      - uses: 94dreamer/issue-assignees@main
+        id: assignees
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          reviewers: |
-            akinocccc
-            material-release-bot
-          assignees: akinocccc, material-release-bot
-          addReviewers: true
-          addAssignees: true
-          numberOfReviewers: 1
-          numberOfAssignees: 1
-          skipKeywords: wip, draft
-        
+          project_name: ${{github.event.repository.name}}
+          issue_title: ${{github.event.issue.title}}
 
+      - run: echo ${{ steps.assignees.outputs.contributors }}
       - name: Add assigness
-        if: steps.collaborators.outputs.data.collaborators != ''
+        if: steps.assignees.outputs.contributors != ''
         uses: actions-cool/issues-helper@v3
         with:
           actions: 'add-assignees'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
-          assignees: ${{ steps.assignees.outputs.collaborators }}
+          assignees: ${{ steps.assignees.outputs.contributors }}
 
       - run: |
-          collaborators=${{ steps.assignees.outputs.collaborators }}
-          collaboratorstring=${collaborators//,/ @}
-          echo "::set-output name=string::@$collaboratorstring"
-        id: template
+          contributors=${{ steps.assignees.outputs.contributors }}
+          contributorstring=${contributors//,/ @}
+          echo "::set-output name=string::@$contributorstring"
+        id: contributors
 
-      - name: Notification
-        if: steps.assignees.outputs.collaborators != ''
+      - name: 通知贡献者
+        if: steps.assignees.outputs.contributors != ''
         uses: actions-cool/maintain-one-comment@v2.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            ♥️ Please ${{ steps.template.outputs.string }} to confirm the issue as soon as possible. After confirmation, please reply to @${{ github.event.issue.user.login }} with the next step plan and the estimated time needed.
+            ♥️ 有劳 ${{ steps.contributors.outputs.string }} 尽快确认问题。
+            确认有效后将下一步计划和可能需要的时间回复给 @${{ github.event.issue.user.login }} 。
             <!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->
           number: ${{ github.event.issue.number }}
           body-include: "<!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->"

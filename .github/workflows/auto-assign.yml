@@ -18,7 +18,7 @@ jobs:
 
       - run: |
           str=$(IFS=,; echo "${{steps.candidate.outputs['candidates']}}")
-          echo "${$str}"
+          echo $str
           echo "{candatestring}={$str}" >> $GITHUB_OUTPUT
         id: covert
 

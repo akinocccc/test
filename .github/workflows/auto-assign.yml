@@ -17,7 +17,8 @@ jobs:
           token: ${{secrets.GH_TOKEN}}
 
       - run: |
-          str=$(IFS=,; echo "${{steps.collaborators.outputs['candidates']}}")
+          str=$(IFS=,; echo "${{steps.candidate.outputs['candidates']}}")
+          echo "${$str}"
           echo "{candatestring}={$str}" >> $GITHUB_OUTPUT
         id: covert
 

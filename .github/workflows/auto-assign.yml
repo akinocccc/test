@@ -17,9 +17,8 @@ jobs:
           method: GET
           headers: |
             Accept: application/vnd.github.v3+json
-          auth: |
-            username: ${{ github.actor }}
-            password: ${{ secrets.GH_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_TOKEN }}
         id: assignees
 
       - run: echo ${{ steps.assignees.outputs.data }}

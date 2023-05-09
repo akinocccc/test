@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get contributors
-        uses: actions/http-request@v2
+        uses: fjogeleit/http-request-action@v1
         with:
           url: https://api.github.com/repos/akinocccc/test/contributors
           method: GET

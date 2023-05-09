@@ -10,24 +10,30 @@ jobs:
   add-assigness:
     runs-on: ubuntu-latest
     steps:
-      - uses: 94dreamer/issue-assignees@main
-        id: assignees
+      - name: Get contributors
+        uses: actions/http-request@v2
         with:
-          project_name: ${{github.event.repository.name}}
-          issue_title: ${{github.event.issue.title}}
+          url: https://api.github.com/repos/akinocccc/test/contributors
+          method: GET
+          headers: |
+            Accept: application/vnd.github.v3+json
+          auth: |
+            username: ${{ github.actor }}
+            password: ${{ secrets.GH_TOKEN }}
+        id: assignees
 
-      - run: echo ${{ steps.assignees.outputs.contributors }}
+      - run: echo ${{ steps.assignees.outputs.data }}
       - name: Add assigness
-        if: steps.assignees.outputs.contributors != ''
+        if: steps.assignees.outputs.data != ''
         uses: actions-cool/issues-helper@v3
         with:
           actions: 'add-assignees'
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.issue.number }}
-          assignees: ${{ steps.assignees.outputs.contributors }}
+          assignees: ${{ steps.assignees.outputs.data }}
 
       - run: |
-          contributors=${{ steps.assignees.outputs.contributors }}
+          contributors=${{ steps.assignees.outputs.data }}
           contributorstring=${contributors//,/ @}
           echo "::set-output name=string::@$contributorstring"
         id: contributors

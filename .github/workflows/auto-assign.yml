@@ -18,7 +18,7 @@ jobs:
 
       - run: |
           str=$(IFS=,; echo "${{steps.collaborators.outputs['candidates']}}")
-          echo "::set-output name=candatestring::$str"
+          echo "{candatestring}={$str}" >> $GITHUB_OUTPUT
         id: covert
 
 

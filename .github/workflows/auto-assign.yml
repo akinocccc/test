@@ -10,29 +10,29 @@ jobs:
   add-assigness:
     runs-on: ubuntu-latest
     steps:
-      - name: Get contributors
-        uses: fjogeleit/http-request-action@v1
+      - name: Auto-Assig
+        uses: akinocccc/select-collaborators@0.0.2
+        id: candidate
         with:
-          url: https://api.github.com/repos/akinocccc/test/contributors
-          method: GET
-          headers: |
-            Accept: application/vnd.github.v3+json
-          username: ${{ github.actor }}
-          password: ${{ secrets.GH_TOKEN }}
-        id: assignees
-
-      - run: echo ${{ steps.assignees.outputs.data }}
-      - name: Add assigness
-        if: steps.assignees.outputs.data != ''
-        uses: actions-cool/issues-helper@v3
-        with:
-          actions: 'add-assignees'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.issue.number }}
-          assignees: ${{ steps.assignees.outputs.data }}
+          token: ${{secrets.GH_TOKEN}}
 
       - run: |
-          contributors=${{ steps.assignees.outputs.data }}
+          str=$(IFS=,; echo "${{steps.collaborators.outputs['candidates']}}")
+          echo "::set-output name=candatestring::$str"
+        id: covert
+
+
+      - uses: wow-actions/auto-assign@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # using the `org/team_slug` or `/team_slug` syntax to add git team as reviewers
+          reviewers: |
+            ${{steps.covert.outputs.candatestring}}
+          assignees: steps.assignees.outputs.data
+          skipKeywords: wip, draft
+
+      - run: |
+          contributors=${{ steps.candidate.outputs['candidates'][0] }}
           contributorstring=${contributors//,/ @}
           echo "::set-output name=string::@$contributorstring"
         id: contributors

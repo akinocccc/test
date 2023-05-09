@@ -1,22 +1,27 @@
-name: Add Assigness
+name: Auto-Assign
 
 on:
   issues:
+    types: [opened, edited]
+  pull_request:
     types: [opened, edited]
 
 jobs:
   add-assigness:
     runs-on: ubuntu-latest
     steps:
-      - name: Get Collaborators
-        id: collaborators
-        uses: actions/github-script@v4
+      - uses: wow-actions/auto-assign@v3
         with:
-          script: |
-            const { data: repoData } = await github.repos.get({ owner: context.repo.owner, repo: context.repo.repo });
-            core.info(`Collaborators: ${JSON.stringify(repoData)}`);
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          reviewers: |
+            akinocccc
+            material-release-bot
+          assignees: akinocccc, material-release-bot
+          addReviewers: true
+          addAssignees: true
+          numberOfReviewers: 1
+          numberOfAssignees: 1
+          skipKeywords: wip, draft
         
 
       - name: Add assigness

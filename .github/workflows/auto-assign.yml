@@ -1,26 +1,19 @@
 name: Auto-Assign
 
 on:
-  push:
   issues:
-    types: [opened, edited]
+    types: [opened]
   pull_request:
-    types: [opened, edited]
+    types: [opened]
 
 jobs:
   add-assigness:
     runs-on: ubuntu-latest
     steps:
-      - uses: akinocccc/select-collaborators@v1.1.1
+      - uses: akinocccc/selected-collaborators@1.0.0
         id: candidate
         with:
           token: ${{ secrets.GH_TOKEN }}
-      - run: |
-          echo "candidates: ${{ steps.candidate.outputs['candidates'] }}"
-          - run: |
-              echo "candidates: ${{ steps.candidate.outputs['candidates_string'] }}"
-      - run: |
-          echo "collaborators: ${{ steps.candidate.outputs['collaborators'] }}"
 
       - uses: wow-actions/auto-assign@v3
         with:
@@ -30,14 +23,13 @@ jobs:
           assignees: ${{ steps.candidate.outputs['candidates_string'] }}
           skipKeywords: wip, draft
 
-      - name: 通知贡献者
-        if: steps.candidate.outputs.at_candidates_string != ''
-        uses: actions-cool/maintain-one-comment@v2.0.0
+      - name: Notification
+        uses: wow-actions/auto-comment@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: |
-            ♥️ 有劳 ${{ steps.candidate.outputs.at_candidates_string }} 尽快确认问题。
-            确认有效后将下一步计划和可能需要的时间回复给 @${{ github.event.issue.user.login }} 。
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          issuesOpened: |
+            ♥️ ${{ steps.candidate.outputs.at_candidates_string }}, please verify the issue as soon as possible. Once it's verified, please reply to @${{ github.event.issue.user.login }} with the next steps and the estimated time required.
             <!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->
-          number: ${{ github.event.issue.number }}
-          body-include: '<!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->'
+          pullRequestOpened: |
+            ♥️ ${{ steps.candidate.outputs.at_candidates_string }}, please reviews the pull request as soon as possible.
+            <!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->

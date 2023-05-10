@@ -16,7 +16,9 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
       - run: |
-          echo ${{ steps.candidate.outputs.candidates }}
+          echo "candidates: ${{ steps.collaborators.outputs['candidates'] }}"
+      - run: |
+          echo "collaborators: ${{ steps.collaborators.outputs['collaborators'] }}"
 
       # - run: |
       #     str=$(IFS=,; echo "${{steps.candidate.outputs['candidates']}}")

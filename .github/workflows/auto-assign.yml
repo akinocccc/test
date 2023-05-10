@@ -1,6 +1,7 @@
 name: Auto-Assign
 
 on:
+  push:
   issues:
     types: [opened, edited]
   pull_request:
@@ -10,8 +11,7 @@ jobs:
   add-assigness:
     runs-on: ubuntu-latest
     steps:
-      - name: Auto-Assig
-        uses: akinocccc/select-collaborators@0.0.3
+      - uses: akinocccc/select-collaborators@0.0.3
         id: candidate
         with:
           token: ${{ secrets.GH_TOKEN }}

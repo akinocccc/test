@@ -21,8 +21,7 @@ jobs:
           echo "collaborators: ${{ steps.candidate.outputs['collaborators'] }}"
 
       - run: |
-          array = JSON.parse(${{steps.candidate.outputs['candidates']}})
-          commaSeparatedString = array.join(',')
+          commaSeparatedString = ${{steps.candidate.outputs['candidates']}}.join(',')
           echo "{candatestring}={$commaSeparatedString}" >> $GITHUB_OUTPUT
         id: covert
 

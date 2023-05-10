@@ -14,13 +14,13 @@ jobs:
         uses: akinocccc/select-collaborators@0.0.2
         id: candidate
         with:
-          token: ${{secrets.GH_TOKEN}}
+          token: ${{ secrets.GH_TOKEN }}
 
-      - run: |
-          str=$(IFS=,; echo "${{steps.candidate.outputs['candidates']}}")
-          echo $str
-          echo "{candatestring}={$str}" >> $GITHUB_OUTPUT
-        id: covert
+      # - run: |
+      #     str=$(IFS=,; echo "${{steps.candidate.outputs['candidates']}}")
+      #     echo $str
+      #     echo "{candatestring}={$str}" >> $GITHUB_OUTPUT
+      #   id: covert
 
 
       - uses: wow-actions/auto-assign@v3
@@ -28,18 +28,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # using the `org/team_slug` or `/team_slug` syntax to add git team as reviewers
           reviewers: |
-            ${{steps.covert.outputs.candatestring}}
-          assignees: steps.covert.outputs.candatestring
+            ${{steps.candidate.outputs.candidates}}
+          assignees: steps.candidate.outputs.candidates
           skipKeywords: wip, draft
 
       - run: |
-          contributors=${{ steps.candidate.outputs['candidates'][0] }}
+          contributors=${{ steps.candidate.outputs.candidates }}
           contributorstring=${contributors//,/ @}
           echo "::set-output name=string::@$contributorstring"
         id: contributors
 
       - name: 通知贡献者
-        if: steps.assignees.outputs.contributors != ''
+        if: steps.candidate.outputs.candidates != ''
         uses: actions-cool/maintain-one-comment@v2.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Auto-Assig
-        uses: akinocccc/select-collaborators@0.0.2
+        uses: akinocccc/select-collaborators@0.0.3
         id: candidate
         with:
           token: ${{ secrets.GH_TOKEN }}

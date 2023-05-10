@@ -20,11 +20,11 @@ jobs:
       - run: |
           echo "collaborators: ${{ steps.candidate.outputs['collaborators'] }}"
 
-      # - run: |
-      #     str=$(IFS=,; echo "${{steps.candidate.outputs['candidates']}}")
-      #     echo $str
-      #     echo "{candatestring}={$str}" >> $GITHUB_OUTPUT
-      #   id: covert
+      - run: |
+          array = JSON.parse(${{steps.candidate.outputs['candidates']}})
+          commaSeparatedString = array.join(',')
+          echo "{candatestring}={$commaSeparatedString}" >> $GITHUB_OUTPUT
+        id: covert
 
 
       - uses: wow-actions/auto-assign@v3
@@ -32,8 +32,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # using the `org/team_slug` or `/team_slug` syntax to add git team as reviewers
           reviewers: |
-            ${{steps.candidate.outputs.candidates}}
-          assignees: ${{steps.candidate.outputs.candidates}}
+            ${{steps.covert.outputs.candatestring}}
+          assignees: ${{steps.covert.outputs.candatestring}}
           skipKeywords: wip, draft
 
       - run: |

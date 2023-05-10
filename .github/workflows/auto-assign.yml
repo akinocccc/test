@@ -11,7 +11,7 @@ jobs:
   add-assigness:
     runs-on: ubuntu-latest
     steps:
-      - uses: akinocccc/select-collaborators@0.0.3
+      - uses: akinocccc/select-collaborators@0.0.x
         id: candidate
         with:
           token: ${{ secrets.GH_TOKEN }}
@@ -33,7 +33,7 @@ jobs:
           # using the `org/team_slug` or `/team_slug` syntax to add git team as reviewers
           reviewers: |
             ${{steps.candidate.outputs.candidates}}
-          assignees: steps.candidate.outputs.candidates
+          assignees: ${{steps.candidate.outputs.candidates}}
           skipKeywords: wip, draft
 
       - run: |

@@ -24,6 +24,7 @@ jobs:
           skipKeywords: wip, draft
 
       - name: Notification
+        if: steps.candidate.outputs['candidates_string'] != github.event.issue.user.login
         uses: wow-actions/auto-comment@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

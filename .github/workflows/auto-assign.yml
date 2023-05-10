@@ -11,7 +11,7 @@ jobs:
   add-assigness:
     runs-on: ubuntu-latest
     steps:
-      - uses: akinocccc/select-collaborators@0.0.11
+      - uses: akinocccc/select-collaborators@1.1.1
         id: candidate
         with:
           token: ${{ secrets.GH_TOKEN }}
@@ -21,8 +21,6 @@ jobs:
               echo "candidates: ${{ steps.candidate.outputs['candidates_string'] }}"
       - run: |
           echo "collaborators: ${{ steps.candidate.outputs['collaborators'] }}"
-
-
 
       - uses: wow-actions/auto-assign@v3
         with:
@@ -42,4 +40,4 @@ jobs:
             确认有效后将下一步计划和可能需要的时间回复给 @${{ github.event.issue.user.login }} 。
             <!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->
           number: ${{ github.event.issue.number }}
-          body-include: "<!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->"
+          body-include: '<!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->'

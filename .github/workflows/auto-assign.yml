@@ -11,7 +11,7 @@ jobs:
   add-assigness:
     runs-on: ubuntu-latest
     steps:
-      - uses: akinocccc/select-collaborators@0.0.10
+      - uses: akinocccc/select-collaborators@0.0.11
         id: candidate
         with:
           token: ${{ secrets.GH_TOKEN }}
@@ -32,19 +32,13 @@ jobs:
           assignees: ${{ steps.candidate.outputs['candidates_string'] }}
           skipKeywords: wip, draft
 
-      - run: |
-          contributors=${{ steps.candidate.outputs.candidates }}
-          contributorstring=${contributors//,/ @}
-          echo "::set-output name=string::@$contributorstring"
-        id: contributors
-
       - name: 通知贡献者
-        if: steps.candidate.outputs.candidates != ''
+        if: steps.candidate.outputs.at_candidates_string != ''
         uses: actions-cool/maintain-one-comment@v2.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            ♥️ 有劳 ${{ steps.contributors.outputs.string }} 尽快确认问题。
+            ♥️ 有劳 ${{ steps.candidate.outputs.at_candidates_string }} 尽快确认问题。
             确认有效后将下一步计划和可能需要的时间回复给 @${{ github.event.issue.user.login }} 。
             <!-- AUTO_ASSIGENEES_NOTIFY_HOOK -->
           number: ${{ github.event.issue.number }}
